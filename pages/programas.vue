@@ -426,7 +426,7 @@ export default {
                     hosts: "4 locutores",
                     date: "marzo 2025",
                     format: "MP3 - 6.509KB  ",
-                    audioUrl: "/audios/noticiero-smg.mp3",
+                    audioUrl: "/audios/noticiero smg.mp3",
                     features: ["Noticias", "Entrevistas", "Eventos", "Logros"],
                     team: [
                         { name: "Jander Ensuncho", role: "Presentador Principal" },
@@ -459,7 +459,7 @@ export default {
                     hosts: "6 actores",
                     date: "mayo 2025",
                     format: "MP3 - 6.543kbps",
-                    audioUrl: "/audios/ecos-del-ultimo-codigo.mp3",
+                    audioUrl: "/audios/ecos del ultimo codigo.mp3",
                     features: ["Drama", "Ciencia Ficción", "Efectos Sonoros", "Música Original"],
                     team: [
                         { name: "Yuliana Otero", role: "Protagonista - Sofia" },
@@ -490,7 +490,7 @@ export default {
                     hosts: "1 presentador, 3 talentos",
                     date: "Diciembre 2024",
                     format: "MP3 - 9.741KB",
-                    audioUrl: "/audios/entre-voces.mp3",
+                    audioUrl: "/audios/entre voces.mp3",
                     features: ["Música", "Poesía", "Comedy", "Entrevistas"],
                     team: [
                         { name: "Yeison Morelo", role: "Presentador" },
