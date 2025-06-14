@@ -121,7 +121,7 @@
                 <div class="bottom-content">
                     <div class="copyright-section">
                         <p class="copyright-text">
-                            © {{ currentYear }} Emisora Escolar - Institución Educativa Santa Rosa de Lima
+                            © {{ currentYear }} Emisora Escolar - Institución Educativa Santa María Goretti. Todos los derechos reservados.
                         </p>
                         <p class="slogan">
                             🌹 "Formando líderes con valores, construyendo el futuro con esperanza" 🌹
@@ -193,7 +193,7 @@ export default {
             ],
 
             currentProgram: {
-                name: 'Noticias Santarrosinas',
+                name: 'Noticias Goretianas',
                 time: '8:00 - 9:00 AM',
                 description: 'Las noticias más importantes de nuestra institución'
             },
@@ -237,7 +237,7 @@ export default {
 }
 
 .wave-path {
-    fill:rgb(255, 59, 59);
+    fill: green;
     animation: waveMove 6s ease-in-out infinite;
 }
 

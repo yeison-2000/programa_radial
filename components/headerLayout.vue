@@ -47,7 +47,7 @@
             <div class="drawer-header">
                 <img class="image" src="/public/img/image.png" alt="">
                 <h3 class="drawer-title">Emisora Escolar</h3>
-                <p class="drawer-subtitle">Santa Rosa de Lima</p>
+                <p class="drawer-subtitle">Santa María Goretti</p>
             </div>
 
             <v-divider></v-divider>
