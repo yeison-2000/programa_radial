@@ -84,7 +84,7 @@
                                 <span>Horario</span>
                             </div>
                             <div v-for="day in weekDays" :key="day" class="day-column header-cell">
-                                <v-icon>{{ getDayIcon(day + 1) }}</v-icon>
+                                <v-icon>{{ getDayIcon(day) }}</v-icon>
                                 <span>{{ day }}</span>
                             </div>
                         </div>
@@ -114,6 +114,18 @@
                                         </div>
                                         <div class="program-duration">
                                             {{ slot.programs[index].duration }}
+                                        </div>
+                                        
+                                        <!-- Audio Player Button -->
+                                        <div class="audio-player" v-if="slot.programs[index].audioFile">
+                                            <v-btn 
+                                                :icon="currentPlayingAudio === slot.programs[index].audioFile && isPlaying ? 'mdi-pause' : 'mdi-play'"
+                                                size="small"
+                                                color="primary"
+                                                variant="elevated"
+                                                class="audio-btn"
+                                                @click="toggleAudio(slot.programs[index].audioFile)"
+                                            ></v-btn>
                                         </div>
                                     </div>
                                     <div v-else class="empty-slot">
@@ -200,6 +212,9 @@
                 </div>
             </v-container>
         </section>
+
+        <!-- Audio Element -->
+        <audio ref="audioPlayer" @ended="onAudioEnded" @play="onAudioPlay" @pause="onAudioPause"></audio>
     </div>
 </template>
 
@@ -213,6 +228,8 @@ export default {
             currentShow: null,
             nextShow: null,
             timeInterval: null,
+            currentPlayingAudio: null,
+            isPlaying: false,
 
             weekDays: ["Lunes", "Martes", "Miércoles", "Jueves", "Viernes"],
 
@@ -230,6 +247,7 @@ export default {
                             description: "Noticias importantes de la institución",
                             icon: "📰",
                             duration: "60 min",
+                            audioFile: "noticiero smg.mp3",
                         },
                         {
                             title: "Música y Cultura",
@@ -237,6 +255,7 @@ export default {
                             description: "Lo mejor de la música y expresiones culturales",
                             icon: "🎵",
                             duration: "60 min",
+                            audioFile: "musicaycultura.mp3",
                         },
                         {
                             title: "Entrevistas Especiales",
@@ -244,6 +263,7 @@ export default {
                             description: "Conversaciones con invitados especiales",
                             icon: "🎤",
                             duration: "60 min",
+                            audioFile: "entrevistasespeciales.mp3",
                         },
                         {
                             title: "Ciencia y Tecnología",
@@ -251,6 +271,7 @@ export default {
                             description: "Descubrimientos científicos y avances tecnológicos",
                             icon: "🔬",
                             duration: "60 min",
+                            audioFile: "cienciaytecnologia.mp3",
                         },
                         {
                             title: "Deportes y Recreación",
@@ -258,6 +279,7 @@ export default {
                             description: "Noticias deportivas y actividades recreativas",
                             icon: "⚽",
                             duration: "60 min",
+                            audioFile: "deportesyrecreacion.mp3",
                         },
                     ],
                 },
@@ -274,6 +296,7 @@ export default {
                             description: "Explorando nuestras raíces históricas",
                             icon: "📚",
                             duration: "60 min",
+                            audioFile: "historiaytradicion.mp3",
                         },
                         {
                             title: "Literatura al Aire",
@@ -281,6 +304,7 @@ export default {
                             description: "Poesía, cuentos y literatura estudiantil",
                             icon: "📖",
                             duration: "60 min",
+                            audioFile: "literaturaalaire.mp3",
                         },
                         {
                             title: "Debates Estudiantiles",
@@ -288,6 +312,7 @@ export default {
                             description: "Discusiones sobre temas de interés estudiantil",
                             icon: "💭",
                             duration: "60 min",
+                            audioFile: "debatesestudiantiles.mp3",
                         },
                         {
                             title: "Arte y Creatividad",
@@ -295,6 +320,7 @@ export default {
                             description: "Showcases de talentos artísticos estudiantiles",
                             icon: "🎨",
                             duration: "60 min",
+                            audioFile: "arteycreatividadv.mp3",
                         },
                         {
                             title: "Resumen Semanal",
@@ -302,6 +328,7 @@ export default {
                             description: "Recapitulación de eventos de la semana",
                             icon: "📝",
                             duration: "60 min",
+                            audioFile: "resumensemanal.mp3",
                         },
                     ],
                 },
@@ -315,37 +342,42 @@ export default {
                         {
                             title: "Música del Almuerzo",
                             category: "Musical",
-                            description: "Ritmos culturales para acompañar el almuerzo",
+                            description: "Ritmos culturales para acompañar tu almuerzo",
                             icon: "🎶",
                             duration: "30 min",
+                            audioFile: "musicadelalmuerzo.mp3",
                         },
                         {
                             title: "Música del Almuerzo",
                             category: "Musical",
-                            description: "Ritmos culturales para acompañar el almuerzo",
+                            description: "Ritmos culturales para acompañar tu almuerzo",
                             icon: "🎶",
                             duration: "30 min",
+                            audioFile: "musicadelalmuerzo.mp3",
                         },
                         {
                             title: "Música del Almuerzo",
                             category: "Musical",
-                            description: "Ritmos culturales para acompañar el almuerzo",
+                            description: "Ritmos culturales para acompañar tu almuerzo",
                             icon: "🎶",
                             duration: "30 min",
+                            audioFile: "musicadelalmuerzo.mp3",
                         },
                         {
                             title: "Música del Almuerzo",
                             category: "Musical",
-                            description: "Ritmos culturales para acompañar el almuerzo",
+                            description: "Ritmos culturales para acompañar tu almuerzo",
                             icon: "🎶",
                             duration: "30 min",
+                            audioFile: "musicadelalmuerzo.mp3",
                         },
                         {
                             title: "Música del Almuerzo",
                             category: "Musical",
-                            description: "Ritmos culturales para acompañar el almuerzo",
+                            description: "Ritmos culturales para acompañar tu almuerzo",
                             icon: "🎶",
                             duration: "30 min",
+                            audioFile: "musicadelalmuerzo.mp3",
                         },
                     ],
                 },
@@ -362,6 +394,7 @@ export default {
                             description: "Momentos de reflexión sobre valores cristianos",
                             icon: "🙏",
                             duration: "60 min",
+                            audioFile: "reflexionesyvalores.mp3",
                         },
                         {
                             title: "Ecología y Ambiente",
@@ -369,13 +402,15 @@ export default {
                             description: "Conciencia ambiental y cuidado del planeta",
                             icon: "🌍",
                             duration: "60 min",
+                            audioFile: "ecologiayambiente.mp3",
                         },
                         {
-                            title: "Vida Estudiantil",
-                            category: "Estudiantil",
-                            description: "Experiencias y vivencias de los estudiantes",
-                            icon: "👥",
+                            title: "Ecos del último código",
+                            category: "Entretenimiento",
+                            description: "Radionovela de suspenso (programa grabado)",
+                            icon: "🎭",
                             duration: "60 min",
+                            audioFile: "ecos del ultimo codigo.mp3",
                         },
                         {
                             title: "Logros Institucionales",
@@ -383,13 +418,15 @@ export default {
                             description: "Reconocimientos y logros de la comunidad",
                             icon: "🏆",
                             duration: "60 min",
+                            audioFile: "logrosinstitucionales.mp3",
                         },
                         {
-                            title: "Talentos Gorettianos",
-                            category: "Talento",
-                            description: "Showcase de talentos estudiantiles",
-                            icon: "🎭",
+                            title: "Entre voces",
+                            category: "Entretenimiento",
+                            description: "Programa de entretenimiento de concurso de canto (programa grabado)",
+                            icon: "🎤",
                             duration: "60 min",
+                            audioFile: "entre voces.mp3",
                         },
                     ],
                 },
@@ -425,11 +462,11 @@ export default {
                     class: "category-deportivo",
                 },
                 {
-                    name: "Participativos",
-                    description: "Programas con participación estudiantil",
-                    icon: "🎤",
-                    count: 3,
-                    class: "category-participativo",
+                    name: "Entretenimiento",
+                    description: "Programas grabados de concursos y radionovelas",
+                    icon: "🎭",
+                    count: 2,
+                    class: "category-entretenimiento",
                 },
                 {
                     name: "Formativos",
@@ -437,6 +474,13 @@ export default {
                     icon: "🙏",
                     count: 2,
                     class: "category-formativo",
+                },
+                {
+                    name: "Musicales",
+                    description: "Programas de música para diferentes momentos",
+                    icon: "🎶",
+                    count: 1,
+                    class: "category-musical",
                 },
             ],
 
@@ -488,9 +532,47 @@ export default {
         if (this.timeInterval) {
             clearInterval(this.timeInterval);
         }
+        if (this.$refs.audioPlayer) {
+            this.$refs.audioPlayer.pause();
+        }
     },
 
     methods: {
+        toggleAudio(audioFile) {
+            const audio = this.$refs.audioPlayer;
+            
+            if (this.currentPlayingAudio === audioFile && this.isPlaying) {
+                // Pausar el audio actual
+                audio.pause();
+            } else {
+                // Reproducir nuevo audio o reanudar el pausado
+                if (this.currentPlayingAudio !== audioFile) {
+                    // Cambiar de audio
+                    this.currentPlayingAudio = audioFile;
+                    // Ruta corregida
+                    audio.src = `./audios/${audioFile}`;
+                }
+                audio.play().catch(error => {
+                    console.error('Error al reproducir audio:', error);
+                    // Mensaje de error más informativo
+                    alert(`No se pudo reproducir el audio: ${audioFile}. Verifica que el archivo existe en la carpeta audios.`);
+                });
+            }
+        },
+
+        onAudioPlay() {
+            this.isPlaying = true;
+        },
+
+        onAudioPause() {
+            this.isPlaying = false;
+        },
+
+        onAudioEnded() {
+            this.isPlaying = false;
+            this.currentPlayingAudio = null;
+        },
+
         updateCurrentShow() {
             const now = new Date();
             const currentDay = now.getDay(); // 0 = Domingo, 1 = Lunes, etc.
@@ -684,20 +766,15 @@ export default {
 }
 
 @keyframes float {
-
-    0%,
-    100% {
+    0%, 100% {
         transform: translateY(0px) rotate(0deg);
     }
-
     25% {
         transform: translateY(-20px) rotate(5deg);
     }
-
     50% {
         transform: translateY(-10px) rotate(-5deg);
     }
-
     75% {
         transform: translateY(-15px) rotate(3deg);
     }
@@ -729,13 +806,10 @@ export default {
 }
 
 @keyframes pulse {
-
-    0%,
-    100% {
+    0%, 100% {
         opacity: 1;
         transform: scale(1);
     }
-
     50% {
         opacity: 0.7;
         transform: scale(1.1);
@@ -769,8 +843,13 @@ export default {
     border-radius: 20px;
     backdrop-filter: blur(15px);
     border: 1px solid rgba(255, 255, 255, 0.2);
-    max-width: 400px;
-    margin: 0 auto;
+    margin-top: 30px;
+    text-align: left;
+}
+
+.current-show-card.off-air {
+    background: rgba(158, 158, 158, 0.1);
+    border: 1px solid rgba(158, 158, 158, 0.2);
 }
 
 .live-indicator {
@@ -778,40 +857,72 @@ export default {
     align-items: center;
     gap: 10px;
     margin-bottom: 15px;
-    justify-content: center;
 }
 
 .pulse-dot {
     width: 12px;
     height: 12px;
-    background: #f44336;
+    background: #4caf50;
     border-radius: 50%;
-    animation: pulse 1.5s ease-in-out infinite;
+    animation: pulse-dot 1.5s ease-in-out infinite;
+}
+
+.off-air-dot {
+    width: 12px;
+    height: 12px;
+    background: #757575;
+    border-radius: 50%;
+}
+
+@keyframes pulse-dot {
+    0%, 100% {
+        opacity: 1;
+        transform: scale(1);
+    }
+    50% {
+        opacity: 0.3;
+        transform: scale(1.2);
+    }
 }
 
 .live-text {
-    color: #f44336;
     font-weight: 700;
     font-size: 0.9rem;
     letter-spacing: 1px;
+    color: #4caf50;
 }
 
-.show-name {
-    font-size: 1.3rem;
+.off-air-text {
+    font-weight: 700;
+    font-size: 0.9rem;
+    letter-spacing: 1px;
+    color: #757575;
+}
+
+.show-info .show-name {
+    font-size: 1.5rem;
     font-weight: 600;
-    margin-bottom: 8px;
+    margin-bottom: 5px;
 }
 
-.show-time {
-    color: #81c784;
-    font-size: 1rem;
+.show-info .show-time {
+    color: rgba(255, 255, 255, 0.8);
     margin-bottom: 10px;
+    font-weight: 500;
 }
 
-.show-description {
-    opacity: 0.9;
-    font-size: 0.95rem;
-    margin: 0;
+.show-info .show-description {
+    margin-bottom: 15px;
+    line-height: 1.5;
+}
+
+.show-category {
+    display: inline-block;
+    background: rgba(255, 255, 255, 0.2);
+    padding: 4px 12px;
+    border-radius: 15px;
+    font-size: 0.85rem;
+    font-weight: 500;
 }
 
 /* Schedule Section */
@@ -827,7 +938,7 @@ export default {
 .section-icon {
     font-size: 3rem;
     color: #2e7d32;
-    margin-bottom: 20px;
+    margin-bottom: 15px;
 }
 
 .section-title {
@@ -844,7 +955,6 @@ export default {
     margin: 0 auto;
 }
 
-/* Schedule Table */
 .schedule-container {
     margin-bottom: 60px;
 }
@@ -857,17 +967,16 @@ export default {
 
 .schedule-header {
     display: grid;
-    grid-template-columns: 200px repeat(5, 1fr);
-    background: linear-gradient(135deg, #2e7d32 0%, #1b5e20 100%);
+    grid-template-columns: 150px repeat(5, 1fr);
+    background: linear-gradient(135deg, #2e7d32, #1b5e20);
     color: white;
 }
 
 .header-cell {
     padding: 20px;
-    text-align: center;
     display: flex;
-    flex-direction: column;
     align-items: center;
+    justify-content: center;
     gap: 8px;
     font-weight: 600;
     border-right: 1px solid rgba(255, 255, 255, 0.1);
@@ -883,7 +992,7 @@ export default {
 
 .time-row {
     display: grid;
-    grid-template-columns: 200px repeat(5, 1fr);
+    grid-template-columns: 150px repeat(5, 1fr);
     border-bottom: 1px solid #e0e0e0;
 }
 
@@ -902,10 +1011,14 @@ export default {
     color: #2e7d32;
 }
 
+.time-text {
+    font-size: 0.9rem;
+}
+
 .program-cell {
     padding: 15px;
     border-right: 1px solid #e0e0e0;
-    min-height: 120px;
+    position: relative;
 }
 
 .program-cell:last-child {
@@ -913,126 +1026,235 @@ export default {
 }
 
 .program-card {
-    height: 100%;
-    background: linear-gradient(135deg, #fff 0%, #f8f9fa 100%);
-    border-radius: 12px;
-    padding: 15px;
-    border-left: 4px solid;
     position: relative;
+    padding: 20px;
+    border-radius: 12px;
+    height: 100%;
+    min-height: 140px;
+    display: flex;
+    flex-direction: column;
     transition: all 0.3s ease;
     cursor: pointer;
 }
 
 .program-card:hover {
-    transform: translateY(-3px);
+    transform: translateY(-2px);
     box-shadow: 0 8px 25px rgba(0, 0, 0, 0.15);
-}
-
-.program-informativo {
-    border-left-color: #2196f3;
-}
-
-.program-cultural {
-    border-left-color: #9c27b0;
-}
-
-.program-educativo {
-    border-left-color: #ff9800;
-}
-
-.program-deportivo {
-    border-left-color: #4caf50;
-}
-
-.program-participativo {
-    border-left-color: #f44336;
-}
-
-.program-formativo {
-    border-left-color: #795548;
-}
-
-.program-musical {
-    border-left-color: #e91e63;
-}
-
-.program-ambiental {
-    border-left-color: #009688;
-}
-
-.program-estudiantil {
-    border-left-color: #3f51b5;
-}
-
-.program-institucional {
-    border-left-color: #ff5722;
-}
-
-.program-talento {
-    border-left-color: #ffc107;
-}
-
-.program-entrevistas {
-    border-left-color: #607d8b;
 }
 
 .program-icon {
     font-size: 2rem;
-    margin-bottom: 8px;
-}
-
-.program-title {
-    font-size: 0.9rem;
-    font-weight: 600;
-    margin-bottom: 5px;
-    color: #1b5e20;
-}
-
-.program-category {
-    font-size: 0.75rem;
-    color: #666;
-    text-transform: uppercase;
-    letter-spacing: 0.5px;
-    margin-bottom: 8px;
-}
-
-.program-description {
-    font-size: 0.8rem;
-    color: #777;
-    line-height: 1.4;
     margin-bottom: 10px;
 }
 
-.program-duration {
-    position: absolute;
-    top: 10px;
-    right: 10px;
-    background: rgba(46, 125, 50, 0.1);
-    color: #2e7d32;
-    padding: 4px 8px;
-    border-radius: 12px;
-    font-size: 0.7rem;
+.program-content {
+    flex: 1;
+}
+
+.program-title {
+    font-size: 1rem;
     font-weight: 600;
+    margin-bottom: 5px;
+    line-height: 1.2;
+}
+
+.program-category {
+    font-size: 0.8rem;
+    margin-bottom: 8px;
+    opacity: 0.8;
+    font-weight: 500;
+}
+
+.program-description {
+    font-size: 0.85rem;
+    line-height: 1.4;
+    margin-bottom: 10px;
+    opacity: 0.9;
+}
+
+.program-duration {
+    font-size: 0.75rem;
+    font-weight: 600;
+    padding: 4px 8px;
+    border-radius: 10px;
+    background: rgba(255, 255, 255, 0.2);
+    align-self: flex-start;
+    margin-top: auto;
+}
+
+/* Program Categories Styles */
+.program-informativo {
+    background: linear-gradient(135deg, #1976d2, #1565c0);
+    color: white;
+}
+
+.program-cultural {
+    background: linear-gradient(135deg, #7b1fa2, #6a1b9a);
+    color: white;
+}
+
+.program-educativo {
+    background: linear-gradient(135deg, #388e3c, #2e7d32);
+    color: white;
+}
+
+.program-deportivo {
+    background: linear-gradient(135deg, #f57c00, #ef6c00);
+    color: white;
+}
+
+.program-entretenimiento {
+    background: linear-gradient(135deg, #e91e63, #c2185b);
+    color: white;
+}
+
+.program-formativo {
+    background: linear-gradient(135deg, #5d4037, #4e342e);
+    color: white;
+}
+
+.program-participativo {
+    background: linear-gradient(135deg, #00796b, #00695c);
+    color: white;
+}
+
+.program-ambiental {
+    background: linear-gradient(135deg, #689f38, #558b2f);
+    color: white;
+}
+
+.program-institucional {
+    background: linear-gradient(135deg, #455a64, #37474f);
+    color: white;
 }
 
 .empty-slot {
-    height: 100%;
+    padding: 20px;
+    text-align: center;
+    color: #bbb;
     display: flex;
     flex-direction: column;
     align-items: center;
     justify-content: center;
-    opacity: 0.5;
     gap: 8px;
+    min-height: 140px;
+}
+
+/* Audio Player Styles */
+.audio-player {
+    position: absolute;
+    top: 15px;
+    right: 15px;
+}
+
+.audio-btn {
+    width: 36px !important;
+    height: 36px !important;
+    min-width: 36px !important;
+    background: rgba(255, 255, 255, 0.9) !important;
+    color: #2e7d32 !important;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15) !important;
+}
+
+.audio-btn:hover {
+    background: white !important;
+    transform: scale(1.1);
+}
+
+/* Lunch Music Section */
+.lunch-music-section {
+    margin: 60px 0;
+}
+
+.lunch-card {
+    background: linear-gradient(135deg, #ff9800, #f57c00);
+    color: white;
+    border-radius: 20px;
+    overflow: hidden;
+    position: relative;
+}
+
+.lunch-card::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background: url('data:image/svg+xml,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100"><circle cx="20" cy="20" r="2" fill="rgba(255,255,255,0.1)"/><circle cx="80" cy="40" r="1.5" fill="rgba(255,255,255,0.1)"/><circle cx="40" cy="70" r="1" fill="rgba(255,255,255,0.1)"/></svg>');
+    opacity: 0.3;
+}
+
+.lunch-header {
+    padding: 30px;
+    text-align: center;
+    position: relative;
+    z-index: 1;
+}
+
+.lunch-icon {
+    font-size: 3rem;
+    margin-bottom: 15px;
+}
+
+.lunch-title {
+    font-size: 2rem;
+    font-weight: 700;
+    margin-bottom: 10px;
+}
+
+.lunch-subtitle {
+    font-size: 1.1rem;
+    opacity: 0.9;
+}
+
+.lunch-content {
+    padding: 0 30px 30px;
+    text-align: center;
+    position: relative;
+    z-index: 1;
+}
+
+.lunch-description {
+    font-size: 1.1rem;
+    margin-bottom: 25px;
+    opacity: 0.9;
+}
+
+.lunch-audio-player {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 15px;
+}
+
+.lunch-play-btn {
+    width: 60px !important;
+    height: 60px !important;
+    min-width: 60px !important;
+    background: rgba(255, 255, 255, 0.9) !important;
+    color: #f57c00 !important;
+    box-shadow: 0 6px 20px rgba(0, 0, 0, 0.2) !important;
+}
+
+.lunch-play-btn:hover {
+    background: white !important;
+    transform: scale(1.1);
+}
+
+.play-text {
+    font-weight: 600;
+    font-size: 1.1rem;
 }
 
 /* Categories Section */
 .categories-section {
-    margin-bottom: 60px;
+    margin: 80px 0;
 }
 
 .categories-title {
     font-size: 2rem;
-    font-weight: 600;
+    font-weight: 700;
     color: #1b5e20;
     text-align: center;
     margin-bottom: 40px;
@@ -1045,40 +1267,31 @@ export default {
 }
 
 .category-card {
-    padding: 25px;
-    border-radius: 16px;
+    padding: 30px;
     text-align: center;
+    border-radius: 16px;
     transition: all 0.3s ease;
-    border-top: 4px solid;
+    position: relative;
+    overflow: hidden;
+}
+
+.category-card::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    opacity: 0;
+    transition: opacity 0.3s ease;
 }
 
 .category-card:hover {
     transform: translateY(-5px);
-    box-shadow: 0 15px 35px rgba(0, 0, 0, 0.1);
 }
 
-.category-informativo {
-    border-top-color: #2196f3;
-}
-
-.category-cultural {
-    border-top-color: #9c27b0;
-}
-
-.category-educativo {
-    border-top-color: #ff9800;
-}
-
-.category-deportivo {
-    border-top-color: #4caf50;
-}
-
-.category-participativo {
-    border-top-color: #f44336;
-}
-
-.category-formativo {
-    border-top-color: #795548;
+.category-card:hover::before {
+    opacity: 0.1;
 }
 
 .category-icon {
@@ -1089,34 +1302,61 @@ export default {
 .category-name {
     font-size: 1.3rem;
     font-weight: 600;
-    color: #1b5e20;
     margin-bottom: 10px;
 }
 
 .category-description {
-    color: #666;
     margin-bottom: 15px;
     line-height: 1.5;
+    opacity: 0.8;
 }
 
 .category-count {
-    background: #e8f5e8;
-    color: #2e7d32;
-    padding: 6px 12px;
-    border-radius: 20px;
-    font-size: 0.9rem;
     font-weight: 600;
+    padding: 6px 12px;
+    border-radius: 15px;
+    background: rgba(0, 0, 0, 0.1);
     display: inline-block;
 }
 
-/* Special Programs */
+.category-informativo {
+    background: linear-gradient(135deg, #e3f2fd, #bbdefb);
+    color: #1565c0;
+}
+
+.category-cultural {
+    background: linear-gradient(135deg, #f3e5f5, #e1bee7);
+    color: #6a1b9a;
+}
+
+.category-educativo {
+    background: linear-gradient(135deg, #e8f5e8, #c8e6c9);
+    color: #2e7d32;
+}
+
+.category-deportivo {
+    background: linear-gradient(135deg, #fff3e0, #ffe0b2);
+    color: #ef6c00;
+}
+
+.category-entretenimiento {
+    background: linear-gradient(135deg, #fce4ec, #f8bbd9);
+    color: #c2185b;
+}
+
+.category-formativo {
+    background: linear-gradient(135deg, #efebe9, #d7ccc8);
+    color: #4e342e;
+}
+
+/* Special Programs Section */
 .special-programs-section {
-    margin-bottom: 60px;
+    margin: 80px 0;
 }
 
 .section-subtitle {
     font-size: 2rem;
-    font-weight: 600;
+    font-weight: 700;
     color: #1b5e20;
     text-align: center;
     margin-bottom: 40px;
@@ -1124,7 +1364,7 @@ export default {
 
 .special-programs-grid {
     display: grid;
-    grid-template-columns: repeat(auto-fit, minmax(350px, 1fr));
+    grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
     gap: 30px;
 }
 
@@ -1140,46 +1380,45 @@ export default {
 }
 
 .special-program-header {
-    padding: 25px;
-    color: white;
+    padding: 30px;
     position: relative;
-    display: flex;
-    justify-content: space-between;
-    align-items: flex-start;
+    color: white;
+    text-align: center;
 }
 
 .special-icon {
     font-size: 3rem;
-    margin-bottom: 10px;
+    margin-bottom: 15px;
 }
 
 .special-badge {
+    position: absolute;
+    top: 15px;
+    right: 15px;
     background: rgba(255, 255, 255, 0.2);
-    padding: 8px 16px;
-    border-radius: 20px;
+    padding: 6px 12px;
+    border-radius: 12px;
     font-size: 0.8rem;
-    font-weight: 700;
-    letter-spacing: 1px;
+    font-weight: 600;
     backdrop-filter: blur(10px);
-    border: 1px solid rgba(255, 255, 255, 0.3);
 }
 
 .special-program-content {
-    padding: 25px;
+    padding: 30px;
     background: white;
 }
 
 .special-title {
     font-size: 1.4rem;
-    font-weight: 700;
+    font-weight: 600;
+    margin-bottom: 15px;
     color: #1b5e20;
-    margin-bottom: 12px;
 }
 
 .special-description {
-    color: #666;
-    line-height: 1.6;
     margin-bottom: 20px;
+    line-height: 1.6;
+    color: #666;
 }
 
 .special-details {
@@ -1192,21 +1431,21 @@ export default {
 .special-day {
     display: flex;
     align-items: center;
-    gap: 6px;
+    gap: 8px;
     color: #2e7d32;
-    font-weight: 600;
-    font-size: 0.9rem;
+    font-weight: 500;
 }
 
 /* Participation Section */
 .participation-section {
-    margin-bottom: 40px;
+    margin: 80px 0 40px;
 }
 
 .participation-card {
-    border-radius: 25px;
-    overflow: hidden;
+    border-radius: 20px;
+    background: linear-gradient(135deg, #2e7d32, #1b5e20) !important;
     position: relative;
+    overflow: hidden;
 }
 
 .participation-card::before {
@@ -1216,28 +1455,27 @@ export default {
     left: 0;
     right: 0;
     bottom: 0;
-    background: linear-gradient(135deg, rgba(255, 255, 255, 0.1) 0%, rgba(255, 255, 255, 0.05) 100%);
-    backdrop-filter: blur(10px);
+    background: url('data:image/svg+xml,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100"><path d="M0,100 Q50,50 100,100 L100,0 L0,0 Z" fill="rgba(255,255,255,0.05)"/></svg>');
+    opacity: 0.3;
 }
 
 .participation-content {
     position: relative;
-    z-index: 2;
+    z-index: 1;
     display: flex;
     align-items: center;
-    justify-content: space-between;
+    gap: 40px;
     flex-wrap: wrap;
-    gap: 30px;
+    padding: 20px;
 }
 
 .participation-text {
     flex: 1;
     min-width: 300px;
-    text-align: left;
 }
 
 .participation-icon {
-    margin-bottom: 15px;
+    margin-bottom: 20px;
     animation: pulse 2s ease-in-out infinite;
 }
 
@@ -1245,219 +1483,174 @@ export default {
     font-size: 2rem;
     font-weight: 700;
     margin-bottom: 15px;
-    line-height: 1.2;
 }
 
 .participation-description {
     font-size: 1.1rem;
     opacity: 0.9;
     line-height: 1.6;
-    margin: 0;
 }
 
 .participation-actions {
     display: flex;
-    flex-direction: column;
     gap: 15px;
-    min-width: 250px;
+    flex-wrap: wrap;
 }
 
 .participation-btn {
-    height: 50px;
-    font-weight: 600;
-    text-transform: none;
-    font-size: 1rem;
-    transition: all 0.3s ease;
+    font-weight: 600 !important;
+    padding: 12px 24px !important;
+    border-radius: 25px !important;
+    transition: all 0.3s ease !important;
 }
 
 .participation-btn:hover {
     transform: translateY(-2px);
-    box-shadow: 0 8px 25px rgba(0, 0, 0, 0.2);
+    box-shadow: 0 8px 20px rgba(0, 0, 0, 0.2);
 }
 
 /* Responsive Design */
-@media (max-width: 1024px) {
-
+@media (max-width: 1200px) {
     .schedule-header,
     .time-row {
-        grid-template-columns: 150px repeat(5, 1fr);
+        grid-template-columns: 120px repeat(5, 1fr);
     }
-
-    .hero-title {
-        font-size: 2.8rem;
+    
+    .time-cell {
+        padding: 15px 10px;
     }
-
+    
+    .program-card {
+        padding: 15px;
+        min-height: 120px;
+    }
+    
     .program-title {
-        font-size: 0.85rem;
-    }
-
-    .program-description {
-        font-size: 0.75rem;
+        font-size: 0.9rem;
     }
 }
 
 @media (max-width: 768px) {
-    .hero-section {
-        padding: 60px 0;
-    }
-
     .hero-title {
-        font-size: 2.2rem;
+        font-size: 2.5rem;
     }
-
-    .hero-description {
-        font-size: 1.1rem;
-    }
-
+    
     .schedule-header,
     .time-row {
-        display: flex;
-        flex-direction: column;
+        grid-template-columns: 100px repeat(5, 1fr);
     }
-
+    
     .time-cell {
-        background: #2e7d32;
-        color: white;
-        font-weight: 700;
-        font-size: 1.1rem;
+        padding: 10px 5px;
     }
-
+    
+    .time-text {
+        font-size: 0.8rem;
+        writing-mode: vertical-rl;
+        text-orientation: mixed;
+    }
+    
     .program-cell {
-        min-height: auto;
-        padding: 10px;
+        padding: 8px;
     }
-
-    .categories-grid {
-        grid-template-columns: 1fr;
+    
+    .program-card {
+        padding: 12px;
+        min-height: 100px;
     }
-
-    .special-programs-grid {
-        grid-template-columns: 1fr;
+    
+    .program-title {
+        font-size: 0.8rem;
     }
-
+    
+    .program-description {
+        font-size: 0.75rem;
+    }
+    
+    .audio-player {
+        position: static;
+        margin-top: 10px;
+        text-align: center;
+    }
+    
     .participation-content {
         flex-direction: column;
         text-align: center;
     }
-
-    .participation-text {
-        min-width: auto;
-        text-align: center;
-    }
-
+    
     .participation-actions {
-        width: 100%;
-        min-width: auto;
-    }
-
-    .floating-icon {
-        font-size: 2rem;
+        justify-content: center;
     }
 }
 
 @media (max-width: 480px) {
-    .hero-title {
-        font-size: 1.8rem;
+    .hero-section {
+        padding: 60px 0;
     }
-
-    .section-title {
+    
+    .hero-title {
         font-size: 2rem;
     }
-
-    .section-subtitle {
-        font-size: 1.6rem;
+    
+    .schedule-section {
+        padding: 60px 0;
     }
-
-    .categories-title {
-        font-size: 1.6rem;
+    
+    .schedule-header,
+    .time-row {
+        display: block;
     }
-
+    
+    .time-row {
+        margin-bottom: 20px;
+        border: 1px solid #e0e0e0;
+        border-radius: 12px;
+        overflow: hidden;
+    }
+    
+    .time-cell {
+        text-align: center;
+        background: #2e7d32;
+        color: white;
+        padding: 15px;
+    }
+    
+    .time-text {
+        writing-mode: initial;
+        font-size: 1rem;
+        font-weight: 600;
+    }
+    
+    .program-cell {
+        padding: 15px;
+        border-right: none;
+        border-bottom: 1px solid #e0e0e0;
+    }
+    
+    .program-cell:last-child {
+        border-bottom: none;
+    }
+    
     .program-card {
-        padding: 12px;
+        min-height: auto;
     }
-
-    .program-icon {
-        font-size: 1.5rem;
+    
+    .categories-grid {
+        grid-template-columns: 1fr;
     }
-
-    .program-title {
-        font-size: 0.8rem;
-    }
-
-    .program-description {
-        display: none;
-    }
-
-    .category-card {
-        padding: 20px;
-    }
-
-    .special-program-header {
-        padding: 20px;
-    }
-
-    .special-program-content {
-        padding: 20px;
-    }
-
-    .participation-title {
-        font-size: 1.6rem;
+    
+    .special-programs-grid {
+        grid-template-columns: 1fr;
     }
 }
 
-/* Print Styles */
-@media print {
-    .hero-section {
-        background: #2e7d32 !important;
-        color: exact;
-    }
-
-    .floating-icons {
-        display: none;
-    }
-
-    .program-card:hover,
-    .category-card:hover,
-    .special-program-card:hover {
-        transform: none;
-        box-shadow: none;
-    }
-
-    .participation-actions {
-        display: none;
-    }
+.program-musical {
+    background: linear-gradient(135deg, #ff9800, #f57c00);
+    color: white;
 }
 
-/* Accessibility */
-@media (prefers-reduced-motion: reduce) {
-
-    .floating-icon,
-    .pulse-icon,
-    .pulse-dot,
-    .participation-icon {
-        animation: none;
-    }
-
-    .program-card:hover,
-    .category-card:hover,
-    .special-program-card:hover,
-    .participation-btn:hover {
-        transform: none;
-    }
-}
-
-/* High contrast mode */
-@media (prefers-contrast: high) {
-    .program-card {
-        border: 2px solid #000;
-    }
-
-    .category-card {
-        border: 2px solid #000;
-    }
-
-    .special-program-card {
-        border: 2px solid #000;
-    }
+.category-musical {
+    background: linear-gradient(135deg, #fff3e0, #ffe0b2);
+    color: #ef6c00;
 }
 </style>
